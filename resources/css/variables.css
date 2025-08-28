@@ -1,0 +1,12 @@
+/* カラーテーマ変数 */
+:root {
+    --error-red: #e53e3e;
+    --text-dark: #2d3748;
+    --text-gray: #4a5568;
+    --text-light: #dfdfdf;
+    --border-gray: #424242;
+    --border-light: #e2e8f0;
+    --bg-light: #f7fafc;
+    --bg-navy: #090541;
+    --hover-bg: #293992;
+}
