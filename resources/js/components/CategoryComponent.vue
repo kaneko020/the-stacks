@@ -44,7 +44,7 @@ const fetchCategories = async () => {
         loading.value = true;
         error.value = null;
 
-        const response = await axios.get('/api/category');
+        const response = await axios.get('/api/categories');
         categories.value = response.data;
         
         console.log('取得したカテゴリー:', response.data);

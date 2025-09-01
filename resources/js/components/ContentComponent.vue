@@ -4,12 +4,11 @@
             <div class="loading-spinner"></div>
             <p>コンテンツを読み込み中...</p>
         </div>
+        <div v-else-if="error" class="error">
+            <p>{{ error }}</p>
+            <button @click="fetchContents()" class="retry-btn">再試行</button>
+        </div>
         <div v-else>
-            <div v-if="error" class="error">
-                <p>{{ error }}</p>
-                <button @click="fetchContents()" class="retry-btn">再試行</button>
-            </div>
-            
             <div class="section-header">
                 <h2 class="section-title">{{ category.name }}</h2>
                 <button class="add-content-btn">
@@ -20,18 +19,26 @@
             <div class="filter-controls">
                 <div class="search-container">
                     <fa icon="search" class="search-icon" />
-                    <input 
-                        type="text" 
-                        v-model="searchQuery" 
-                        placeholder="タイトルや作者名で検索" 
-                        class="search-input" 
-                        @input="filterContents"
-                    />
+                    <div class="search-input-group">
+                        <input 
+                            type="text" 
+                            v-model="searchQuery" 
+                            placeholder="タイトルや作者名で検索" 
+                            class="search-input"
+                            @keyup.enter="fetchContents"
+                        />
+                        <button 
+                            @click="fetchContents" 
+                            class="search-btn"
+                        >
+                            検索
+                        </button>
+                    </div>
                 </div>
                 <div class="sort-container">
                     <label for="sort-select">並び替え: </label>
                     <select id="sort-select" v-model="sortOption" @change="filterContents" class="sort-select">
-                        <option :value="SortOption.ID_ASC"></option>
+                        <option :value="SortOption.ID_ASC">なし</option>
                         <option :value="SortOption.TITLE_ASC">タイトル（昇順）</option>
                         <option :value="SortOption.TITLE_DESC">タイトル（降順）</option>
                         <option :value="SortOption.AUTHOR_ASC">作者（昇順）</option>
@@ -45,14 +52,16 @@
                     <label>お気に入りのみ表示</label>
                 </div>
             </div>
-            <div class="content-grid">
-                <ContentCard 
-                    v-for="content in filteredContents" 
-                    :key="content.id"
-                    :content="content"
-                />
+            <div v-if="filteredContents.length > 0">
+                <div class="content-grid">
+                    <ContentCard 
+                        v-for="content in filteredContents" 
+                        :key="content.id"
+                        :content="content"
+                    />
+                </div>
             </div>
-            <div v-if="filteredContents.length === 0 && !loading && !error" class="no-results">
+            <div v-else-if="filteredContents.length === 0" class="no-results">
                 <p>該当するコンテンツがありません</p>
             </div>
         </div>
@@ -210,14 +219,43 @@ watch(() => props.categoryId, () => {
     top: 50%;
     transform: translateY(-50%);
     color: #666;
+    z-index: 2;
+}
+
+.search-input-group {
+    display: flex;
+    width: 80%;
 }
 
 .search-input {
-    width: 80%;
+    flex: 1;
     padding: 0.5rem 0.5rem 0.5rem 2.5rem;
     background-color: white;
-    border-radius: 4px;
+    border: 1px solid white;
+    border-right: none;
+    border-radius: 4px 0 0 4px;
     font-size: 0.9rem;
+    min-width: 200px;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--bg-navy);
+}
+
+.search-btn {
+    background-color: var(--bg-navy);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.search-btn:hover {
+    background-color: var(--hover-bg);
 }
 
 .sort-container {
@@ -244,10 +282,9 @@ watch(() => props.categoryId, () => {
     margin-right: 0.3rem;
 }
 
-
 .content-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     gap: 1rem;
 }
 

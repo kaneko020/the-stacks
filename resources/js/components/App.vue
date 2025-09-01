@@ -59,6 +59,6 @@ body {
     flex: 1;
     margin-left: 250px; /* サイドバーの幅と同じ */
     transition: margin-left 0.3s ease;
-    background-color: #e4e4e4;
+    background-color: var(--bg-light);
 }
 </style>

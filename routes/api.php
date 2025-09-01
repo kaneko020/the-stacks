@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // カテゴリーAPI
-Route::get('/category', [CategoryController::class, 'getList']);
+Route::get('/categories', [CategoryController::class, 'getList']);
 Route::get('/category/{id}', [CategoryController::class, 'getById']);
 
 // サンプルAPI

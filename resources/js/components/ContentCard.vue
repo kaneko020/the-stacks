@@ -19,14 +19,13 @@ defineProps<Props>();
 <style scoped>
 .content-card {
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s, scale 0.2s;
     display: flex;
 }
 
 .content-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.562);
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.562);
+    scale: 1.05;
 }
 
 .content-image img {
